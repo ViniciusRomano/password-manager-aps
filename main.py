@@ -242,7 +242,7 @@ def create_menu():
     global menu
 
     menu = CursesMenu(
-        "Password Manager - Create by: Vinicius Romano, Higor Rozan", 'Disconnected')
+        "Password Manager - Created by: Vinicius Romano, Higor Rozan", 'Disconnected')
 
     item_register = FunctionItem("Sign in", sign_in)
 
