@@ -1,3 +1,4 @@
 .vscode
 Mongo.pyc
 MyCrypto.pyc
+__pycache__
