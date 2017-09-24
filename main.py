@@ -203,6 +203,48 @@ def show_table():
     print(table.table)
     gambs = raw_input("(Press enter to back)")
 
+
+def modify_website():
+    global logged_user
+    password_acc = get_password()
+    website_name = raw_input("Website name:")
+    # get website data
+    website = db.get_website(logged_user, website_name)
+    # website doesn't exist
+    if(len(website) == 1):
+        print("This website does not exists!")
+        time.sleep(1)
+    else:
+        # get pass(hex) -> decode hex -> decrypt
+        # remove website
+        db.remove_website(logged_user, website["web_data"][0]["website"])
+        logged_user = db.get_user(logged_user["user"])
+        # insert website
+        website_name = raw_input("New website name:")
+        while True:
+            password = getpass.getpass(
+                "New password for " + website_name + ":")
+            password_again = getpass.getpass(
+                "New password for " + website_name + " again:")
+            if(password == password_again):
+                break
+            else:
+                print("The passwords you entered aren't the same!")
+
+                # encrypt password
+        password = MyCrypto().encrypt(password, password_acc)
+        # convert to hex
+        password = password.encode('hex')
+
+        # create json
+        logged_user["web_data"].append(
+            {"website": website_name, "password": password})
+        # insert in my db
+        db.insert_website(logged_user)
+
+        print("Website " + website_name + " updated!")
+        time.sleep(1)
+
 ##
 # Menu Functions
 ##
@@ -219,6 +261,7 @@ def create_logged_menu(user):
     show_all = FunctionItem("Show all website accounts", show_table)
     create_web = FunctionItem("Create website account", create_website)
     read_web = FunctionItem("Read website account", read_website)
+    read_web = FunctionItem("Modify website account", modify_website)
     delete_web = FunctionItem("Delete website account", remove_website)
     manage_account = FunctionItem("Change your password", change_password)
 
