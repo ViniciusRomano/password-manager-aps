@@ -93,35 +93,25 @@ def change_password():
                 print("The passwords you entered aren't the same!")
 
         # update website passwords
-        print(logged_user["web_data"])
         new_web_data = []
         for x in logged_user["web_data"]:
             # decrypt password
-            print(x["password"])
             decrypt_password = MyCrypto().decrypt(x["password"].decode(
                 'hex'), password)
-            print(decrypt_password)
             # encrypt and change password
             x["password"] = MyCrypto().encrypt(
                 decrypt_password, new_password).encode('hex')
             # append
-            print(x)
             new_web_data.append(x)
 
         logged_user["web_data"] = new_web_data
         # update user
         logged_user["password"] = MyCrypto().hash_password(new_password)
         db.update_password(logged_user)
-        print('--')
-        print(logged_user["web_data"][0]["password"])
-        print(new_password)
-        print('--')
-        print(MyCrypto().decrypt(logged_user["web_data"][0]["password"].decode(
-            'hex'), new_password))
         # update webdata
         db.insert_website(logged_user)
         print('Changed password!')
-        time.sleep(100)
+        time.sleep(1.5)
     else:
         print("Incorrect password!")
         time.sleep(1.5)
