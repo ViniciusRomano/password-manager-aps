@@ -2,3 +2,4 @@ terminaltables==3.1.0
 curses_menu==0.5.0
 pymongo==3.4.0
 pycrypto==2.6.1
+halo==0.0.5

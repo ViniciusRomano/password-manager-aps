@@ -10,7 +10,7 @@ import time
 import getpass
 import os
 from terminaltables import AsciiTable
-
+from halo import Halo
 
 # global variables
 menu = []
@@ -50,11 +50,11 @@ def register():
                  ("web_data", [])])
     # insert in my db
     try:
+        x = Halo().start('Creating user')
         db.insert_user(data)
-        print(user + ' created!')
+        x.succeed(user + 'created!')
     except:
-        print("Error on insert, try again.")
-
+        x.fail("Error on insert, try again.")
     time.sleep(1.5)
 
 
@@ -112,6 +112,7 @@ def change_password():
         db.insert_website(logged_user)
         print('Changed password!')
         time.sleep(1.5)
+
     else:
         print("Incorrect password!")
         time.sleep(1.5)
@@ -140,9 +141,13 @@ def create_website():
     logged_user["web_data"].append(
         {"website": website_name, "password": password})
     # insert in my db
-    db.insert_website(logged_user)
+    try:
+        x = Halo().start('Creating website...')
+        db.insert_website(logged_user)
+        x.succeed("Website " + website_name + " added!")
+    except:
+        x.fail("Error on insert, try again.")
 
-    print("Website " + website_name + " added!")
     time.sleep(1)
 
 
